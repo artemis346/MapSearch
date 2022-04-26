@@ -1,0 +1,19 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android androidConfiguration
+
+dependencies {
+    implementation project(path: ':network')
+}
+
+dependencies {
+    kapt diLibs.hiltCompiler
+    implementation diLibs.hilt
+    implementation coreLibs.ktxCore
+    implementation coroutine.coroutine
+}

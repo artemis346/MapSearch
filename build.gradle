@@ -1,0 +1,52 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    apply from: 'dependency.gradle'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinPlugin"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt"
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+    }
+}
+
+ext {
+    androidConfiguration = {
+
+        compileSdkVersion androidCompileVersion
+        buildToolsVersion androidBuildToolsVersion
+
+
+        buildFeatures {
+            viewBinding true
+        }
+
+        defaultConfig {
+
+            vectorDrawables.useSupportLibrary = true
+
+            minSdkVersion androidMinSdk
+            targetSdkVersion androidTargetSdk
+
+            multiDexEnabled true
+
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+            resValue "string", "MapsKey", "AIzaSyAfy4lLmeq0S9Kz0mi6X7y_l5Ohsrwjs_Q"
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+}
+
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
