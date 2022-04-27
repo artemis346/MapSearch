@@ -17,4 +17,5 @@ dependencies {
     implementation diLibs.hilt
     implementation coreLibs.ktxCore
     implementation coroutine.coroutine
+    testImplementation test.values()
 }

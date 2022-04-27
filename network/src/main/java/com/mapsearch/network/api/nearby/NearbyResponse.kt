@@ -18,9 +18,6 @@ data class Hub(
     @SerializedName("longitude")
     val longitude: String,
 
-    @SerializedName("radius")
-    val radius: Int,
-
     @SerializedName("name")
     val name: String,
 )

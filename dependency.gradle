@@ -1,7 +1,7 @@
 ext {
     // Build versions
     ktxVersion = '1.7.0'
-    kotlinPlugin = '1.6.10'
+    kotlinPlugin = '1.6.20'
     gradlePluginVersion = '7.0.4'
 
     //SDK Version
@@ -13,14 +13,15 @@ ext {
     // Google Libs version
     appCompatVersion = '1.4.1'
     material = '1.5.0'
-    compose = '1.1.1'
-    composeConstraint = '1.0.0'
-    sharedprefs = '1.0.0'
-    composePaging = '1.0.0-alpha14'
+    compose = '1.2.0-alpha08'
+    navigation = '2.4.2'
+    navHilt = '1.0.0'
     paging = '3.1.1'
 
     //GMS
     playServices = '18.0.2'
+    mapCompose = '2.1.0'
+    mapUtil = '0.6.2'
 
     //DI libs
     daggerVersion = '2.41'
@@ -72,14 +73,10 @@ ext {
             composeUi        : "androidx.compose.ui:ui:${compose}",
             composeFoundation : "androidx.compose.foundation:foundation:${compose}",
             composeMaterial  : "androidx.compose.material:material:${compose}",
-            composeConstraintlayout : "androidx.constraintlayout:constraintlayout-compose:${composeConstraint}",
             runtime          : "androidx.compose.runtime:runtime:${compose}",
-            compiler          : "androidx.compose.compiler:compiler:${compose}",
+            compiler          : "androidx.compose.compiler:compiler:1.0.0-alpha10",
             activity          : "androidx.activity:activity-compose:1.3.1",
-            tooling           : "androidx.compose.ui:ui-tooling:${compose}",
-//            gradleApi       : "com.android.tools.build:gradle-api:7.0.4",
-//            pagingRuntime     : "androidx.paging:paging-runtime:${paging}",
-//            paging            : "androidx.paging:paging-compose:${composePaging}"
+            tooling           : "androidx.compose.ui:ui-tooling:${compose}"
     ]
 
     network = [
@@ -93,10 +90,6 @@ ext {
             landscapistGlide : "com.github.skydoves:landscapist-glide:${landscapistGlide}"
     ]
 
-    preferences = [
-            prefs            : "androidx.datastore:datastore-preferences:${sharedprefs}"
-    ]
-
     test = [
             junit            : "junit:junit:${junit}",
             extJunit         : "androidx.test.ext:junit:${extJunit}",
@@ -105,7 +98,14 @@ ext {
             mockitokotlin    : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlin}"
     ]
 
-    gms = [
-            map     : "com.google.android.gms:play-services-maps:${playServices}"
+    mapGms = [
+            mapServices     : "com.google.android.gms:play-services-maps:${playServices}",
+            mapCompose      : "com.google.maps.android:maps-compose:${mapCompose}",
+            mapUtils        : "com.google.maps.android:android-maps-utils:${mapUtil}"
+    ]
+
+    navigation = [
+            nav               : "androidx.navigation:navigation-compose:${navigation}",
+            navHilt           : "androidx.hilt:hilt-navigation-compose:${navHilt}"
     ]
 }

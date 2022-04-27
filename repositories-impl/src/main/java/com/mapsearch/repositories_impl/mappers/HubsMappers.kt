@@ -1,17 +1,23 @@
 package com.mapsearch.repositories_impl.mappers
 
-import com.mapsearch.network.api.nearby.NearbyResponse
+import com.mapsearch.network.api.hubs.NearbyHubs
 import com.mapsearch.repositories.dto.HubsDto
 
-fun NearbyResponse.mapToDomain(): List<HubsDto> {
-    return hubs?.let { list ->
-        list.map {
-            HubsDto(
-                id = it.id,
-                lat = it.latitude.toDouble(),
-                lng = it.longitude.toDouble(),
-                name = it.name
-            )
+fun List<NearbyHubs>.mapToDomain(): List<HubsDto> {
+    val result = mutableListOf<HubsDto>()
+    forEach {
+        if (it.latitude.isNotEmpty() || it.longitude.isNotEmpty()) {
+            result.add(it.mapToDomain())
         }
-    } ?: listOf()
+    }
+    return result
 }
+
+fun NearbyHubs.mapToDomain() =
+    HubsDto(
+        id = id.toString(),
+        lat = latitude.toDouble(),
+        lng = longitude.toDouble(),
+        name = name
+    )
+

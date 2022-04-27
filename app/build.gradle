@@ -17,7 +17,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerExtensionVersion '1.2.0-alpha08'
     }
 
     defaultConfig {
@@ -31,8 +31,10 @@ dependencies {
     implementation project(path: ':network')
     implementation project(path: ':repositories')
     implementation project(path: ':repositories-impl')
-//    implementation project(path: ':features:search')
-//    implementation project(path: ':core:uikit')
+    implementation project(path: ':uikit')
+    implementation project(path: ':navigation')
+    implementation project(path: ':features:nearby')
+    implementation project(path: ':features:search')
 }
 
 dependencies {
@@ -40,8 +42,6 @@ dependencies {
     implementation diLibs.hilt
     implementation uiLibs.values()
     implementation coreLibs.values()
-    implementation gms.values()
-    implementation uiLibs.values()
-    implementation "com.google.maps.android:maps-compose:1.0.0"
-    implementation "com.google.maps.android:android-maps-utils:0.6.2"
+//    implementation uiLibs.values()
+    implementation navigation.values()
 }

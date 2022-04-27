@@ -5,7 +5,8 @@ import com.mapsearch.network.api.hubs.HubsSearchApi
 import com.mapsearch.network.api.nearby.NearbyApi
 import com.mapsearch.network.authprovider.AuthProvider
 import com.mapsearch.network.authprovider.IAuthProvider
-import com.mapsearch.network.inerceptors.HeadersInterceptor
+import com.mapsearch.network.inerceptors.HeadersInterceptorV2
+import com.mapsearch.network.inerceptors.HeadersInterceptorV7
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -34,8 +36,13 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideHeaderInterceptor(provider: IAuthProvider): HeadersInterceptor {
-        return HeadersInterceptor(provider)
+    fun provideHeaderInterceptorV2(provider: IAuthProvider): HeadersInterceptorV2 {
+        return HeadersInterceptorV2(provider)
+    }
+
+    @Provides
+    fun provideHeaderInterceptorV7(provider: IAuthProvider): HeadersInterceptorV7 {
+        return HeadersInterceptorV7(provider)
     }
 
     @Provides
@@ -47,34 +54,52 @@ class NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        headersInterceptor: HeadersInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(HTTP_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
             .writeTimeout(HTTP_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
             .readTimeout(HTTP_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(headersInterceptor)
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient) =
-        Retrofit.Builder().client(okHttpClient)
+    @Named("apiV7")
+    fun provideRetrofitV7(okHttpClient: OkHttpClient, headersInterceptor: HeadersInterceptorV7) =
+        Retrofit.Builder()
+            .client(okHttpClient
+                .newBuilder()
+                .addInterceptor(headersInterceptor)
+                .build())
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(baseUrl)
             .build()
 
+
     @Provides
     @Singleton
-    fun provideNearbyApi(retrofit: Retrofit): NearbyApi {
+    @Named("apiV2")
+    fun provideRetrofitV2(okHttpClient: OkHttpClient, headersInterceptor: HeadersInterceptorV2) =
+        Retrofit.Builder()
+            .client(okHttpClient
+                .newBuilder()
+                .addInterceptor(headersInterceptor)
+                .build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(baseUrl)
+            .build()
+
+
+    @Provides
+    @Singleton
+    fun provideNearbyApi(@Named("apiV7") retrofit: Retrofit): NearbyApi {
         return retrofit.create(NearbyApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideHubsSearchApi(retrofit: Retrofit): HubsSearchApi {
+    fun provideHubsSearchApi(@Named("apiV2") retrofit: Retrofit): HubsSearchApi {
         return retrofit.create(HubsSearchApi::class.java)
     }
 }
