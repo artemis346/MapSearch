@@ -45,7 +45,7 @@ fun ScreenContent(vm: SearchViewModel, navController: NavHostController) {
             ProductsList(vm, state.hubs)
         }
         else -> {
-            Log.e("state", state.javaClass.name)
+            Log.v("state", state.javaClass.name)
         }
     }
 }

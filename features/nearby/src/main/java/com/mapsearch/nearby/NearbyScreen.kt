@@ -1,13 +1,11 @@
 package com.mapsearch.nearby
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -22,7 +20,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.compose.*
 import com.mapsearch.nearby.viewmodel.ErrorMap
-import com.mapsearch.nearby.viewmodel.MapListViewModel
+import com.mapsearch.nearby.viewmodel.NearbyViewModel
 import com.mapsearch.nearby.viewmodel.MapUiState
 import com.mapsearch.nearby.viewmodel.SelectedItemState
 import com.searchmap.utils.DEFAULT_ZOOM
@@ -30,10 +28,10 @@ import navigateSearch
 
 
 @Composable
-fun MainMapScreen(navController: NavHostController) {
-    val vm: MapListViewModel = hiltViewModel()
+fun NearbyScreen(navController: NavHostController) {
+    val vm: NearbyViewModel = hiltViewModel()
     Box(Modifier.fillMaxSize()) {
-        MapScreen(vm)
+        NearbyMapScreen(vm)
         Button(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -56,8 +54,9 @@ fun MainMapScreen(navController: NavHostController) {
 }
 
 @Composable
-private fun MapScreen(vm: MapListViewModel) {
+private fun NearbyMapScreen(vm: NearbyViewModel) {
     LaunchedEffect(Unit, block = {
+        vm.isFetchItem = true
         vm.fetchCurrentPosition()
     })
 
@@ -76,6 +75,12 @@ private fun MapScreen(vm: MapListViewModel) {
             ?: cameraPositionState.position.target
         val radius = SphericalUtil.computeDistanceBetween(topLeftLocation, centerLocation)
         vm.fetchMarkers(centerLocation, radius = radius)
+    }
+
+    DisposableEffect(key1 = vm) {
+        onDispose {
+            vm.isFetchItem = false
+        }
     }
 
     if (!cameraPositionState.isMoving) {
@@ -130,7 +135,7 @@ fun MapView(
 
 
 @Composable
-fun ErrorToast(modifier: Modifier, vm: MapListViewModel) {
+fun ErrorToast(modifier: Modifier, vm: NearbyViewModel) {
     val state = vm.uiMapState.collectAsState().value
     if (state is MapUiState.Error) {
         if (state.error == ErrorMap.LargeZoomLevel) {

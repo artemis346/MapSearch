@@ -7,6 +7,7 @@ import com.mapsearch.repositories.ISelectedRepository
 import com.mapsearch.search.mapper.mapToItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +23,8 @@ class SearchViewModel @Inject constructor(
     val uiState: StateFlow<SearchUiState> = listData
 
     companion object {
-        const val SEARCH_DEBOUNCE = 1000L
+        const val SEARCH_DEBOUNCE = 2000L
+        const val SEARCH_DELAY = 500L
         const val MIN_QUERY_LENGTH = 2
     }
 
@@ -43,6 +45,9 @@ class SearchViewModel @Inject constructor(
             flowOf(query)
                 .dropWhile {
                     it.length < MIN_QUERY_LENGTH
+                }
+                .onStart {
+                    delay(SEARCH_DELAY)
                 }
                 .debounce(SEARCH_DEBOUNCE)
                 .collect {

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mapsearch.nearby.MainMapScreen
+import com.mapsearch.nearby.NearbyScreen
 import com.mapsearch.search.SearchResultScreen
 
 @Composable
@@ -16,7 +16,7 @@ fun NavigationComponent(navController: NavHostController) {
         startDestination = MAP_ROUTE
     ) {
         composable(MAP_ROUTE) {
-            MainMapScreen(navController)
+            NearbyScreen(navController)
         }
         composable(SEARCH_ROUTE) {
             SearchResultScreen(navController)
