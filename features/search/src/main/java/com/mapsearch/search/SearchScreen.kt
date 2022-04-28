@@ -1,6 +1,7 @@
 package com.mapsearch.search
 
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -43,10 +44,9 @@ fun ScreenContent(vm: SearchViewModel, navController: NavHostController) {
         is SearchUiState.Success -> {
             ProductsList(vm, state.hubs)
         }
-        is SearchUiState.Loading -> {
-//                Shimmer(SHIMMER_SIZE)
+        else -> {
+            Log.e("state", state.javaClass.name)
         }
-        else -> {}
     }
 }
 

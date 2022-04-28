@@ -13,11 +13,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = jvmTargetVersion
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0-alpha08'
+        kotlinCompilerExtensionVersion composeVersion
     }
 }
 
@@ -36,7 +36,4 @@ dependencies {
     implementation mapGms.values()
     implementation uiLibs.values()
     implementation navigation.values()
-    implementation "com.google.maps.android:maps-compose:2.1.0"
-    implementation "com.google.maps.android:android-maps-utils:0.6.2"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 }

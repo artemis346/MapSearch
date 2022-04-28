@@ -4,21 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
-android androidConfiguration
 
-//android {
-//    buildFeatures {
-//        compose true
-//    }
-//
-//    kotlinOptions {
-//        jvmTarget = "1.8"
-//    }
-//
-//    composeOptions {
-//        kotlinCompilerExtensionVersion '1.2.0-alpha08'
-//    }
-//}
+android androidConfiguration
 
 dependencies {
     kapt diLibs.hiltCompiler

@@ -6,11 +6,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.mapsearch.nearby.mappers.mapToMarker
 import com.mapsearch.repositories.INearbyRepository
 import com.mapsearch.repositories.ISelectedRepository
-import com.searchmap.utils.MAX_VISIBLE_RADIUS
 import com.searchmap.utils.isRadiusLessThanMax
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,11 +24,11 @@ class MapListViewModel @Inject constructor(
 
     private val selectedItem =
         MutableStateFlow<SelectedItemState>(SelectedItemState.Initial())
-    val locationState: StateFlow<SelectedItemState> = selectedItem
+    val selectedItemState: StateFlow<SelectedItemState> = selectedItem
 
     private val mapState =
-        MutableStateFlow<MapUIState>(MapUIState.Initial)
-    val uiState: StateFlow<MapUIState> = mapState
+        MutableStateFlow<MapUiState>(MapUiState.Initial)
+    val uiMapState: StateFlow<MapUiState> = mapState
 
     fun fetchMarkers(coord: LatLng, radius: Double) {
         selectedItem.value = SelectedItemState.Loading
@@ -44,8 +42,8 @@ class MapListViewModel @Inject constructor(
             }
                 .dropWhile {
                     val result = !isRadiusLessThanMax(it)
-                    if(result) {
-                        mapState.value = MapUIState.Error(ErrorMap.LargeZoomLevel)
+                    if (result) {
+                        mapState.value = MapUiState.Error(ErrorMap.LargeZoomLevel)
                     }
 
                     result
@@ -59,7 +57,7 @@ class MapListViewModel @Inject constructor(
                     )
                 }
                 .catch { exception ->
-                    mapState.value = MapUIState.Error(ErrorMap.LoadingError)
+                    mapState.value = MapUiState.Error(ErrorMap.LoadingError)
                 }
                 .map { list ->
                     list.map {
@@ -68,7 +66,7 @@ class MapListViewModel @Inject constructor(
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    mapState.value = MapUIState.Success(it)
+                    mapState.value = MapUiState.Success(it)
                 }
         }
     }

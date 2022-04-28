@@ -1,6 +1,6 @@
 package com.mapsearch.network.authprovider
 
-class AuthProvider() : IAuthProvider {
+class AuthProvider : IAuthProvider {
     override fun provideAuth(): String {
         return "y7X7cWCGj69fCvczQweU"
     }

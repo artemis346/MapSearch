@@ -14,5 +14,4 @@ dependencies {
     implementation network.gsonConverter
     kapt diLibs.hiltCompiler
     implementation diLibs.hilt
-    testImplementation test.values()
 }

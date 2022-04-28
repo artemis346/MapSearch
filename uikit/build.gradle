@@ -12,11 +12,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = jvmTargetVersion
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0-alpha08'
+        kotlinCompilerExtensionVersion composeVersion
     }
 }
 

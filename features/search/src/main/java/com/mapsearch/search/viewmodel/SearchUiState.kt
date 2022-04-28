@@ -10,6 +10,6 @@ sealed class SearchUiState {
     object Loading : SearchUiState()
 }
 
-enum class ErrorState() {
-    ERROR_LOADING()
+enum class ErrorState {
+    ERROR_LOADING
 }

@@ -1,6 +1,5 @@
 package com.mapsearch.nearby
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -11,7 +10,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -25,7 +23,7 @@ import com.google.maps.android.SphericalUtil
 import com.google.maps.android.compose.*
 import com.mapsearch.nearby.viewmodel.ErrorMap
 import com.mapsearch.nearby.viewmodel.MapListViewModel
-import com.mapsearch.nearby.viewmodel.MapUIState
+import com.mapsearch.nearby.viewmodel.MapUiState
 import com.mapsearch.nearby.viewmodel.SelectedItemState
 import com.searchmap.utils.DEFAULT_ZOOM
 import navigateSearch
@@ -63,8 +61,8 @@ private fun MapScreen(vm: MapListViewModel) {
         vm.fetchCurrentPosition()
     })
 
-    val locationState = vm.locationState.collectAsState()
-    val mapState = vm.uiState.collectAsState()
+    val locationState = vm.selectedItemState.collectAsState()
+    val mapState = vm.uiMapState.collectAsState()
     val cameraPositionState = rememberCameraPositionState {
         val state = locationState.value
         if (state is SelectedItemState.Initial) {
@@ -90,8 +88,6 @@ private fun MapScreen(vm: MapListViewModel) {
         locationState = locationState,
         mapState = mapState
     )
-
-    val state = mapState.value
 }
 
 @Composable
@@ -99,7 +95,7 @@ fun MapView(
     cameraPositionState: CameraPositionState,
     refreshMarkers: () -> Unit,
     locationState: State<SelectedItemState>,
-    mapState: State<MapUIState>
+    mapState: State<MapUiState>
 ) {
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
@@ -123,7 +119,7 @@ fun MapView(
             )
         } else {
             val mapStateVal = mapState.value
-            if (mapStateVal is MapUIState.Success) {
+            if (mapStateVal is MapUiState.Success) {
                 mapStateVal.markers.forEach {
                     Marker(rememberMarkerState(position = it.coordinate), title = it.name)
                 }
@@ -135,8 +131,8 @@ fun MapView(
 
 @Composable
 fun ErrorToast(modifier: Modifier, vm: MapListViewModel) {
-    val state = vm.uiState.collectAsState().value
-    if (state is MapUIState.Error) {
+    val state = vm.uiMapState.collectAsState().value
+    if (state is MapUiState.Error) {
         if (state.error == ErrorMap.LargeZoomLevel) {
             Text(
                 modifier = modifier,

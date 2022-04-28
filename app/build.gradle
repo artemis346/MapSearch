@@ -13,11 +13,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = jvmTargetVersion
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0-alpha08'
+        kotlinCompilerExtensionVersion composeVersion
     }
 
     defaultConfig {
@@ -42,6 +42,6 @@ dependencies {
     implementation diLibs.hilt
     implementation uiLibs.values()
     implementation coreLibs.values()
-//    implementation uiLibs.values()
     implementation navigation.values()
+    implementation mapGms.mapServices
 }
