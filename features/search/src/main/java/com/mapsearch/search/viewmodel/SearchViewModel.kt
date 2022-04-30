@@ -30,13 +30,11 @@ class SearchViewModel @Inject constructor(
 
     fun selectItem(id: String) {
         viewModelScope.launch {
-            flow {
-                selectedRepository.selectItem(id)
-                emit(Unit)
-            }.flowOn(Dispatchers.IO)
+            flowOf(selectedRepository.selectItem(id))
+                .flowOn(Dispatchers.Default)
                 .collect {
-                listData.value = SearchUiState.ItemSelected
-            }
+                    listData.value = SearchUiState.ItemSelected
+                }
         }
     }
 

@@ -11,5 +11,4 @@ dependencies {
     kapt diLibs.hiltCompiler
     implementation diLibs.hilt
     implementation navigation.values()
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 }

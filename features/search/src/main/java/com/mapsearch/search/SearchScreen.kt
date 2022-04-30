@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -35,10 +37,13 @@ fun SearchResultScreen(navController: NavHostController) {
     )
 }
 
+
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ScreenContent(vm: SearchViewModel, navController: NavHostController) {
     when (val state = vm.uiState.collectAsState().value) {
         is SearchUiState.ItemSelected -> {
+            LocalSoftwareKeyboardController.current?.hide()
             navController.navigateUp()
         }
         is SearchUiState.Success -> {
